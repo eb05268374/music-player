@@ -9,6 +9,9 @@ from random import randint
 
 p.init()
 
+p.display.set_caption("MP3 Player")
+p.display.set_icon(p.image.load("icons/play.png"))
+
 screen = p.display.set_mode((240,270))
 
 font = p.font.SysFont("arial", 10)
@@ -196,4 +199,5 @@ while running:
     main_player.render()
 p.quit()
 quit()
+
 
