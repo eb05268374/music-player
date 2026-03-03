@@ -4,6 +4,8 @@
 - Mutagen module installed (use pip)
 - MP3 files to play (if there's no metadata attached it WILL crash out lol)
 
+
+
 ***How to create a playlist:***
   1. Find line 72 in music.py
   2. In the square brackets, for every song in the playlist do the following:
@@ -11,6 +13,8 @@
   4. If it's not the last song in the playlist, add a comma after "Song()"
      e.g.
 72     self.playlist = [Song("D:/My Music/Evanescence - Fallen/01 - Going Under.mp3"), Song("D:/My Music/Evanescence - Fallen/02 - Bring Me To Life.mp3")] # for every song in the playlist, put Song({file location})
+
+
 
 ***Instructions for UI:***
 
