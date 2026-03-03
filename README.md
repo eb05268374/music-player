@@ -10,7 +10,7 @@
   3. Put "Song()" with the MP3s filepath as the argument to pass
   4. If it's not the last song in the playlist, add a comma after "Song()"
      ###### e.g.
-###### 72     self.playlist = [Song("D:/My Music/Evanescence - Fallen/01 - Going Under.mp3"), Song("D:/My Music/Evanescence - Fallen/02 - Bring Me To Life.mp3")]
+###### 72     self.playlist = [*Song("D:/My Music/Evanescence - Fallen/01 - Going Under.mp3"), Song("D:/My Music/Evanescence - Fallen/02 - Bring Me To Life.mp3")*]
 
 
 
