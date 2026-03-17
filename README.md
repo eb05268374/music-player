@@ -1,18 +1,10 @@
-## **Dependancies:**
-- Python (obvs)
-- Pygame module installed (use pip)
-- Mutagen module installed (use pip)
-- MP3 files to play (if there's no metadata attached it WILL crash out lol)
+Needs MP3 files to play (if there's no metadata attached it WILL crash out lol)
 
 ## **How to create a playlist:**
-  1. Find line 72 in music.py
-  2. In the square brackets, for every song in the playlist do the following:
-  3. Put "Song()" with the MP3s filepath as the argument to pass
-  4. If it's not the last song in the playlist, add a comma after "Song()"
-     ###### e.g.
-###### 72     self.playlist = [*Song("D:/My Music/Evanescence - Fallen/01 - Going Under.mp3"), Song("D:/My Music/Evanescence - Fallen/02 - Bring Me To Life.mp3")*]
-
-
+  - Right now, the program only supports one playlist, so you simply have to modify the only one avaliable
+  - The CSV file has an example of how to format your playlist if you want to directly modifiy it there
+  - You can add songs to the playlist from the program itself (you have to toggle shuffle for it to apply though sry)
+  - The program can't remove songs *yet*
 
 ## **Instructions for UI:**
 
@@ -39,6 +31,11 @@
 ### **Fifth button:**
   "Theme"
   - Switches through avaliable colour schemes
+
+### **Sixth button:**
+  "Playlist"
+  - Toggles between the playlist and the song screen
+  - Playlist mode adds another button at the very bottom so you can add songs
 
 ### **Time slider:**
   - The big bar under the MP3 artwork
