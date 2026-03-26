@@ -30,8 +30,6 @@ def load_playlists():
     return playlists
 
 def browseMusicFiles():
-    print("ADDING SONG")
-
     filename = {"file": None}
     def open_dialog(): #using tkinter + pygame is SO messy lol
         root = Tk()
@@ -43,12 +41,10 @@ def browseMusicFiles():
             title = "Select a File",
             filetypes = (("MP3 files",
                         "*.mp3*"),
-                        ("WAV files",
-                        "*.wav*"),
                         ("OGG files",
                         "*.ogg*"),
                         ("all supported files",
-                        "*.mp3* *.wav* *.ogg*")))
+                        "*.mp3* *.ogg*")))
         root.destroy()
     t = threading.Thread(target=open_dialog)
     t.start()
@@ -68,7 +64,7 @@ def update_csv(playlists):
             f.write(line)
 
 def remove_song(current_playlist, i):
-    if i == 0: # cant remove the playlist name lo 
+    if i == 0: # cant remove the playlist name lol
         return None
     playlists[current_playlist].pop(i)
     update_csv(playlists)
@@ -81,5 +77,9 @@ def add_song(current_playlist):
     playlists[current_playlist].append(filename)
     update_csv(playlists)
 
+def add_playlist():
+    playlist_name = f"Playlist No. {len(playlists) + 1}"
+    playlists.append([playlist_name])
+    update_csv(playlists)
 
 playlists = load_playlists()
