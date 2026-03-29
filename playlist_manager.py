@@ -1,18 +1,6 @@
 # import filedialog module
 from tkinter import filedialog, Tk
 import threading
-import os # for exe
-import sys # for exe
-
-
-def resource_path(relative_path): # absolutely yoinked function
-    try:
-        base_path = sys._MEIPASS  # PyInstaller temp folder
-    except Exception:
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
-# literally no idea what this function does
 
 def load_playlists():
     def split_playlist(playlists): # reads the raw CSV fiel data and removes trailing whitespace and stuff :D
@@ -22,7 +10,7 @@ def load_playlists():
             playlist[song_file] = playlist[song_file].strip()
         return playlist
 
-    with open(resource_path("playlists.csv"), "r") as f:
+    with open("playlists.csv", "r") as f:
         playlists = f.readlines()
 
     for i in range(0, len(playlists)):
@@ -55,7 +43,7 @@ def browseMusicFiles():
         return filename["file"]
 
 def update_csv(playlists):
-    with open(resource_path("playlists.csv"), "w") as f:
+    with open("playlists.csv", "w") as f:
         for i in playlists:
             line = ""
             for j in i:
@@ -73,13 +61,19 @@ def remove_song(current_playlist, i):
 def add_song(current_playlist):
     filename = browseMusicFiles()
     if filename == False:
-        return None
+        return False # no file selected so tell main such
     playlists[current_playlist].append(filename)
     update_csv(playlists)
+    return True # file selected so tell main such
 
 def add_playlist():
     playlist_name = f"Playlist No. {len(playlists) + 1}"
     playlists.append([playlist_name])
     update_csv(playlists)
+
+def delete_playlist(playlist_index_to_delete):
+    playlists.pop(playlist_index_to_delete)
+    update_csv(playlists)
+
 
 playlists = load_playlists()
