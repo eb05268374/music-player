@@ -31,17 +31,17 @@ screen = p.display.set_mode((237,280))
 
 font = p.font.SysFont("arial", 10)
 
-blip = p.mixer.Sound(resource_path("blip.wav"))
-new_blip = p.mixer.Sound(resource_path("new.wav"))
+blip = p.mixer.Sound(resource_path("sounds/blip.wav"))
+new_blip = p.mixer.Sound(resource_path("sounds/new.wav"))
 
-skip = p.mixer.Sound(resource_path("skip.wav"))
-last = p.mixer.Sound(resource_path("last.wav"))
+skip = p.mixer.Sound(resource_path("sounds/skip.wav"))
+last = p.mixer.Sound(resource_path("sounds/last.wav"))
 
 # playlist deleteing sounds
-delete_start = p.mixer.Sound(resource_path("delete_start.wav"))
-delete_cancel = p.mixer.Sound(resource_path("delete_cancel.wav"))
-delete_confirm = p.mixer.Sound(resource_path("delete_confirm.wav"))
-denied = p.mixer.Sound(resource_path("denied.wav"))
+delete_start = p.mixer.Sound(resource_path("sounds/delete_start.wav"))
+delete_cancel = p.mixer.Sound(resource_path("sounds/delete_cancel.wav"))
+delete_confirm = p.mixer.Sound(resource_path("sounds/delete_confirm.wav"))
+denied = p.mixer.Sound(resource_path("sounds/denied.wav"))
 
 screen.blit(font.render("Loading...", True, (255,255,255)), (100, 100))
 p.display.flip()
@@ -187,23 +187,13 @@ class Player:
 
     def load_playlist(self, current_playlist = 0):
         # we do not talk about how bad the variable naming is
-        print("Loading Playlist", end="")
         playlist = playlist_manager.playlists[current_playlist]
         if len(playlist_manager.playlists) != 0:
             song_playlist = []
 
-            dots = 10
-            if len(playlist) < dots:
-                dots = len(playlist)
-
-            songs_between_dots = len(playlist) // dots
-
             for i in range(1, len(playlist)): # indexed from 1 because 0 is the playlist name
                 song_playlist.append(Song(playlist[i]))
-                if i % songs_between_dots == 0:
-                    print(".", end="")
             playlist_name = playlist[0]
-            print()
             return song_playlist, playlist_name
         return [], playlist[0] # return this if theres no playlist
 
