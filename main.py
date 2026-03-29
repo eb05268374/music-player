@@ -31,17 +31,16 @@ screen = p.display.set_mode((237,280))
 
 font = p.font.SysFont("arial", 10)
 
-blip = p.mixer.Sound(resource_path("sounds/blip.wav"))
-new_blip = p.mixer.Sound(resource_path("sounds/new.wav"))
-
-skip = p.mixer.Sound(resource_path("sounds/skip.wav"))
-last = p.mixer.Sound(resource_path("sounds/last.wav"))
-
-# playlist deleteing sounds
-delete_start = p.mixer.Sound(resource_path("sounds/delete_start.wav"))
-delete_cancel = p.mixer.Sound(resource_path("sounds/delete_cancel.wav"))
-delete_confirm = p.mixer.Sound(resource_path("sounds/delete_confirm.wav"))
-denied = p.mixer.Sound(resource_path("sounds/denied.wav"))
+sounds = {
+    "blip" : p.mixer.Sound(resource_path("sounds/blip.wav")),
+    "new_blip" : p.mixer.Sound(resource_path("sounds/new.wav")),
+    "skip" : p.mixer.Sound(resource_path("sounds/skip.wav")),
+    "last" : p.mixer.Sound(resource_path("sounds/last.wav")),
+    "delete_start" : p.mixer.Sound(resource_path("sounds/delete_start.wav")),
+    "delete_confirm" : p.mixer.Sound(resource_path("sounds/delete_confirm.wav")),
+    "delete_cancel" : p.mixer.Sound(resource_path("sounds/delete_cancel.wav")),
+    "denied" : p.mixer.Sound(resource_path("sounds/denied.wav"))
+          }
 
 screen.blit(font.render("Loading...", True, (255,255,255)), (100, 100))
 p.display.flip()
@@ -358,28 +357,28 @@ class Player:
             if len(self.loaded_songs_queue) != 0:
                 return True
             else:
-                denied.play()
+                sounds["denied"].play()
                 return False
 
         if (pos[0] > 205 and pos[0] < 235):
             if (pos[1] > 5 and pos[1] < 35) and check_if_there_are_songs_in_queue():
                 self.pause_song()
-                blip.play()
+                sounds["blip"].play()
             elif (pos[1] > 40 and pos[1] < 70) and check_if_there_are_songs_in_queue():
                 self.last_song()
-                last.play()
+                sounds["last"].play()
             elif (pos[1] > 75 and pos[1] < 105) and check_if_there_are_songs_in_queue():
                 self.next_song()
-                skip.play()
+                sounds["skip"].play()
             elif (pos[1] > 110 and pos[1] < 140) and check_if_there_are_songs_in_queue():
                 self.toggle_shuffle()
-                blip.play()
+                sounds["blip"].play()
             elif (pos[1] > 145 and pos[1] < 175):
                 self.change_theme()
-                blip.play()
+                sounds["blip"].play()
             elif (pos[1] > 180 and pos[1] < 210) and check_if_there_are_songs_in_queue():
                 self.playlist_mode()
-                blip.play()
+                sounds["blip"].play()
 
         if self.render_mode == "Playlist": #if using playlist view mode, more buttons are there
             def stop_music():
@@ -399,7 +398,7 @@ class Player:
                 self.playlist_number += 1
                 if self.playlist_number > len(playlist_manager.playlists) - 1:
                     self.playlist_number = 0
-                skip.play()
+                sounds["skip"].play()
                 self.loaded_songs_queue, self.playlist_name = self.load_playlist(self.playlist_number)
                 prep_next_song()
 
@@ -408,32 +407,32 @@ class Player:
                 self.playlist_number -= 1
                 if self.playlist_number < 0:
                     self.playlist_number = len(playlist_manager.playlists) - 1
-                last.play()
+                sounds["last"].play()
                 self.loaded_songs_queue, self.playlist_name = self.load_playlist(self.playlist_number)
                 prep_next_song()
             if len(self.loaded_songs_queue) != 0:
                 for i in range(1, len(playlist_manager.playlists[self.playlist_number])):
                     if (pos[0] > 175 and pos[0] < 185) and (pos[1] > 10 + i * 20 + self.playlist_scroll and pos[1] < 20 + i * 20 + self.playlist_scroll):
                         playlist_manager.remove_song(self.playlist_number, i)
-                        delete_confirm.play()
+                        sounds["delete_confirm"].play()
             
             if (pos[0] > 205 and pos[0] < 235):
                 if (pos[1] > 245 and pos[1] < 275):
                     success = playlist_manager.add_song(self.playlist_number)
                     if not success:
-                        delete_cancel.play() # while not deleting anything... it just fits
+                        sounds["delete_cancel"].play() # while not deleting anything... it just fits
                         return
                     self.max_name_scroll = self.find_longest_file_name()
-                    blip.play()
+                    sounds["blip"].play()
                     if len(self.loaded_songs_queue) == 0: # if this is the very first song of the playlist
                         self.loaded_songs_queue, self.playlist_name = self.load_playlist(self.playlist_number)
                         self.play_song()
                         self.pause_song()
-                    new_blip.play()
+                    sounds["new_blip"].play()
 
                 elif (pos[1] > 210 and pos[1] < 240):
                     playlist_manager.add_playlist()
-                    new_blip.play()
+                    sounds["new_blip"].play()
                     next_playlist()
             
             elif (pos[1] > 5 + self.playlist_scroll and pos[1] < 26 + self.playlist_scroll): # playlist switching --
@@ -447,14 +446,14 @@ class Player:
                     if len(playlist_manager.playlists) > 1: # cant delete last playlist otherwise whole thing breaks
                         if not self.delete_confirm_stage: # gotta double click it
                             self.delete_confirm_stage = True
-                            delete_start.play()
+                            sounds["delete_start"].play()
                         else:
                             playlist_manager.delete_playlist(self.playlist_number)
                             self.delete_confirm_stage = False
-                            delete_confirm.play()
+                            sounds["delete_confirm"].play()
                             last_playlist()
                     else:
-                        denied.play()
+                        sounds["denied"].play()
 
                 #--
     
@@ -463,7 +462,7 @@ class Player:
             pos = p.mouse.get_pos()
             if not ((pos[0] > 129 and pos[0] < 150) and (pos[1] > 5 and pos[1] < 26)):
                 self.delete_confirm_stage = False
-                delete_cancel.play()
+                sounds["delete_cancel"].play()
     
     def handle_sliders(self):
         if p.mouse.get_pressed()[0] and self.render_mode == "Player":
@@ -471,7 +470,7 @@ class Player:
             if (pos[0] > 5 and pos[0] < 195) and (pos[1] > 267 and pos[1] < 274): #volume
                 self.volume = (p.mouse.get_pos()[0]-5)/190
                 p.mixer.music.set_volume((self.volume**2)/2)
-                blip.set_volume((self.volume**2))
+                sounds["blip"].set_volume((self.volume**2))
 
             elif (pos[0] > 5 and pos[0] < 195) and (pos[1] > 210 and pos[1] < 240): #time
                 self.loaded_songs_queue[self.current_song].seconds_played = self.loaded_songs_queue[self.current_song].track_length * ((p.mouse.get_pos()[0]-5)/190)
@@ -497,9 +496,12 @@ while running:
         elif ev.type == p.MOUSEBUTTONDOWN:
             if p.mouse.get_pressed()[0]:
                 main_player.handle_mouse_inputs()
+                
         elif ev.type == p.KEYDOWN:
             if p.key.get_pressed()[p.K_SPACE] and len(main_player.loaded_songs_queue) != 0:
                 main_player.pause_song()
+                sounds["blip"].play()
+
         elif ev.type == p.MOUSEWHEEL: # scroll through the playlist
             main_player.playlist_scroll = min(main_player.playlist_scroll + ev.y * 10, 0)
     
